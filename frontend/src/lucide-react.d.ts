@@ -1,0 +1,22 @@
+declare module 'lucide-react' {
+  export const AlertTriangle: any
+  export const ArrowRight: any
+  export const BarChart3: any
+  export const BookOpen: any
+  export const BookOpenCheck: any
+  export const CheckCircle2: any
+  export const ClipboardList: any
+  export const Clock3: any
+  export const GraduationCap: any
+  export const LayoutDashboard: any
+  export const Layers3: any
+  export const LockKeyhole: any
+  export const MailCheck: any
+  export const Moon: any
+  export const Plus: any
+  export const Search: any
+  export const Settings: any
+  export const Sparkles: any
+  export const Sun: any
+  export const Users: any
+}

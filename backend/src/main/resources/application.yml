@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: routeed-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/routed_db}
+    username: ${DB_USERNAME:routed_user}
+    password: ${DB_PASSWORD:routed_password}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: true
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+
+server:
+  port: ${PORT:8080}
+
+routeed:
+  app-url: ${APP_URL:http://localhost:5173}
+  default-organization-id: ${DEFAULT_ORGANIZATION_ID:00000000-0000-0000-0000-000000000001}
+  jwt:
+    secret: ${JWT_SECRET:change-this-development-secret-to-a-secure-value}
+    access-token-minutes: 15
+    refresh-token-days: 14
+  personalization:
+    mastery-threshold: 80
+  ollama:
+    base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+    model: ${OLLAMA_MODEL:llama3.2:3b}
+

@@ -1,0 +1,64 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: routed_postgres
+    environment:
+      POSTGRES_DB: routed_db
+      POSTGRES_USER: routed_user
+      POSTGRES_PASSWORD: routed_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - routed_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U routed_user -d routed_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: routed_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - routed_ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  mailpit:
+    image: axllent/mailpit:v1.22
+    container_name: routed_mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  api:
+    build:
+      context: ./backend
+    container_name: routed_api
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/routed_db
+      DB_USERNAME: routed_user
+      DB_PASSWORD: routed_password
+      OLLAMA_BASE_URL: http://ollama:11434
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      JWT_SECRET: routeed-development-secret-please-change-before-production
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+volumes:
+  routed_postgres_data:
+  routed_ollama_data:
+
